@@ -43,7 +43,7 @@ describe('convertFileToAst', function() {
 
   it("returns ast for less file", () => {
     return loadTestFile("t5").then(({f, name}) => {
-      return convertFileToAst(f, name, []);
+      return convertFileToAst(f, {filename: name, paths: [] });
     }).then(({ast, fileName}) => {
       expect(ast.firstRoot).to.be.true;
       expect(fileName).to.equal(path.join(process.cwd(), "tests/fixtures/t5.less"));
@@ -52,7 +52,7 @@ describe('convertFileToAst', function() {
 
   it("returns ast for less file respecting include paths", () => {
     return loadTestFile("test_fold").then(({f, name}) => {
-      return convertFileToAst(f, name, ['tests/fixtures/fold']);
+      return convertFileToAst(f, { filename: name, paths: ['tests/fixtures/fold'] });
     }).then(({ast, fileName}) => {
       expect(ast.firstRoot).to.be.true;
       expect(fileName).to.equal(path.join(process.cwd(), "tests/fixtures/test_fold.less"));
@@ -66,8 +66,8 @@ describe('createGraphFromFile', () => {
   it("returns 1 node graph for file with no deps", () => {
     return loadTestFile("t5").then(({f, name}) => {
       return createGraphFromFile(f, sign, {
-        fileName: name,
-        filePaths: []
+        filename: name,
+        paths: []
       }).then(g => {
         verifyGraph(g, ['t5'], []);
       });
@@ -77,8 +77,8 @@ describe('createGraphFromFile', () => {
   it("returns 2 node graph for file with one dep", () => {
     return loadTestFile("t3").then(({f, name}) => {
       return createGraphFromFile(f, sign, {
-        fileName: name,
-        filePaths: []
+        filename: name,
+        paths: []
       }).then(g => {
         verifyGraph(g, ['t3', 't5'], [{ v: 't5', w: 't3' }]);
       });
@@ -88,8 +88,8 @@ describe('createGraphFromFile', () => {
   it("returns 3 nodes for file with 3 deps", () => {
     return loadTestFile("t4").then(({f, name}) => {
       return createGraphFromFile(f, sign, {
-        fileName: name,
-        filePaths: []
+        filename: name,
+        paths: []
       }).then(g => {
         verifyGraph(g, ['t3', 't4', 't5'], [
           { v: 't5', w: 't3' },
@@ -102,8 +102,8 @@ describe('createGraphFromFile', () => {
   it("returns 4 nodes for file with 4 deps", () => {
     return loadTestFile("t1").then(({f, name}) => {
       return createGraphFromFile(f, sign, {
-        fileName: name,
-        filePaths: []
+        filename: name,
+        paths: []
       }).then(g => {
         verifyGraph(g, ['t1', 't2', 't3', 't5'], [
           { v: 't5', w: 't3' },
@@ -117,8 +117,8 @@ describe('createGraphFromFile', () => {
   it("returns 6 nodes for file with 6 deps", () => {
     return loadTestFile("t6").then(({f, name}) => {
       return createGraphFromFile(f, sign, {
-        fileName: name,
-        filePaths: []
+        filename: name,
+        paths: []
       }).then(g => {
         verifyGraph(g, ['t1', 't2', 't3', 't4', 't5', 't6'], [
           { v: 't5', w: 't3' },

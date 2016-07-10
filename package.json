@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "graphlib": "^2.1.0",
-    "less": "^2.7.1"
+    "less": "^2.7.1",
+    "object-assign": "^4.1.0"
   }
 }
