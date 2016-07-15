@@ -1,4 +1,4 @@
-const {createGraphFromFile} = require('./lib/parser');
+const {createGraphFromFile} = require('./build/parser');
 const assign = require('object-assign');
 
 module.exports = function(sign, file, filename, lessOpts) {
