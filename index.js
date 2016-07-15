@@ -1,10 +1,6 @@
 const {createGraphFromFile} = require('./lib/parser');
 const assign = require('object-assign');
 
-module.exports = function(lessOpts) {
-  return {
-    parse(sign, file, filename) {
-      return createGraphFromFile(file, sign, assign({}, lessOpts, {filename}));
-    }
-  }
+module.exports = function(sign, file, filename, lessOpts) {
+  return createGraphFromFile(file, sign, assign({}, lessOpts, {filename}));
 }
