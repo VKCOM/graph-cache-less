@@ -8,6 +8,7 @@ var parse = _require.parse;
 
 var Graph = require('graphlib').Graph;
 var fs = require('fs');
+var path = require('path');
 
 function convertFileToAst(lessFile, opts) {
   return new Promise(function (resolve, reject) {
@@ -47,9 +48,10 @@ function walkLessAst(sign, roots, g, loadedFilesAcc) {
     var newAstRoots = ast.rules.filter(function (el) {
       return el.importedFilename;
     }).map(function (el) {
-      g.setNode(el.importedFilename);
-      g.setEdge(el.importedFilename, file);
-      return [el.importedFilename, el.root];
+      var absPath = path.isAbsolute(el.importedFilename) ? el.importedFilename : path.join(process.cwd(), el.importedFilename);
+      g.setNode(absPath);
+      g.setEdge(absPath, file);
+      return [absPath, el.root];
     });
     return acc.concat(newAstRoots);
   }, []).reduce(function (acc, root) {
