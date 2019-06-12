@@ -15,7 +15,7 @@ function parser(lessOpts, sign, file, filename) {
   return lessParser(sign, file, filename, lessOpts);
 }
 
-const gcache = createGraphCache(parser.bind(null, lessOpts }, sign, {});
+const gcache = createGraphCache(parser.bind(null, lessOpts), sign, {});
 ```
 
 lessOpts — options that will be passed directly to ```LESS``` compiler.
