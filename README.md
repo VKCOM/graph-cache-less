@@ -28,6 +28,4 @@ You can run ```npm run test-watch``` to rerun tests on file updates.
 
 ## Contributing
 
-This library is written using ES6 code. 
-Before pushing run ```npm run build``` to generate ES5 compatible js code.
 Issues and PR's are welcomed here. 
