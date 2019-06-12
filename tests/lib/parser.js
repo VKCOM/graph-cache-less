@@ -3,6 +3,7 @@
 const {expect} = require('chai');
 const fs = require('fs');
 const path = require('path');
+const sortBy = require('lodash.sortby');
 
 const {createGraphFromFile, convertFileToAst} = require('../../lib/parser');
 
@@ -25,10 +26,9 @@ function loadTestFile(name) {
 
 function verifyGraph(g, vertexList, edgeList = []) {
   let nodes = g.nodes().sort();
-  let edges = g.edges().sort((a, b) => a.v <= b.v);
+  let edges = sortBy(g.edges(), (value) => value.v);
 
-  edgeList = edgeList.map(e => ({ v: createPath(e.v), w: createPath(e.w) }))
-    .sort((a, b) => a.v <= b.v);
+  edgeList = sortBy(edgeList.map(e => ({ v: createPath(e.v), w: createPath(e.w) })), (value) => value.v);
   vertexList = vertexList.map(createPath).sort();
 
   expect(nodes).to.eql(vertexList);
@@ -92,8 +92,8 @@ describe('createGraphFromFile', () => {
         paths: []
       }).then(g => {
         verifyGraph(g, ['t3', 't4', 't5'], [
-          { v: 't5', w: 't3' },
-          { v: 't3', w: 't4' }
+          { v: 't3', w: 't4' },
+          { v: 't5', w: 't3' }
         ]);
       });
     });
@@ -106,9 +106,9 @@ describe('createGraphFromFile', () => {
         paths: []
       }).then(g => {
         verifyGraph(g, ['t1', 't2', 't3', 't5'], [
-          { v: 't5', w: 't3' },
-          { v: 't3', w: 't1' },
           { v: 't2', w: 't1' },
+          { v: 't3', w: 't1' },
+          { v: 't5', w: 't3' }
         ]);
       });
     });
@@ -121,12 +121,12 @@ describe('createGraphFromFile', () => {
         paths: []
       }).then(g => {
         verifyGraph(g, ['t1', 't2', 't3', 't4', 't5', 't6'], [
-          { v: 't5', w: 't3' },
-          { v: 't3', w: 't1' },
-          { v: 't2', w: 't1' },
-          { v: 't3', w: 't4' },
           { v: 't1', w: 't6' },
-          { v: 't4', w: 't6' }
+          { v: 't2', w: 't1' },
+          { v: 't3', w: 't1' },
+          { v: 't3', w: 't4' },
+          { v: 't4', w: 't6' },
+          { v: 't5', w: 't3' }
         ]);
       });
     });
