@@ -1,6 +1,6 @@
 {
   "name": "@vkontakte/graph-cache-less",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,10 +13,10 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "lodash.sortby": "^4.7.0",
-    "mocha": "^6.1.4"
+    "mocha": "^6.2.0"
   },
-  "engines" : {
-    "node" : ">=0.10.6"
+  "engines": {
+    "node": ">=0.10.6"
   },
   "dependencies": {
     "graphlib": "^2.1.7",
