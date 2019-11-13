@@ -8,7 +8,12 @@ const sortBy = require('lodash.sortby');
 const {createGraphFromFile, convertFileToAst} = require('../../lib/parser');
 
 function createPath(name) {
-  return path.join(__dirname, '..', 'fixtures', name + '.less');
+  let filename = name;
+  if (!/\.\w+$/.test(name)) {
+    filename = name + '.less';
+  }
+
+  return path.join(__dirname, '..', 'fixtures', filename);
 }
 
 function loadTestFile(name) {
@@ -62,6 +67,18 @@ describe('convertFileToAst', function() {
 });
 
 describe('createGraphFromFile', () => {
+  it("works with empty files", () => {
+    return loadTestFile("test_empty_css").then(({f, name}) => {
+      return createGraphFromFile(f, sign, {
+        filename: name,
+        paths: []
+      }).then(g => {
+        verifyGraph(g, ['test_empty_css', 'empty.css'], [
+          { v: 'empty.css', w: 'test_empty_css' },
+        ]);
+      });
+    });
+  });
 
   it("returns 1 node graph for file with no deps", () => {
     return loadTestFile("t5").then(({f, name}) => {
